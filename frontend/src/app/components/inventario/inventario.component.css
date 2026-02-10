@@ -1,0 +1,79 @@
+.contenedor {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #eee2d6;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+input,
+textarea {
+  border: 1px solid #c4b6a9;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.calculo {
+  display: flex;
+  gap: 1rem;
+  background: #f8f3ec;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  background: #b36a2e;
+  color: white;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+
+button.secundario {
+  background: #6f6f6f;
+}
+
+button.eliminar {
+  background: #b3261e;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-bottom: 1px solid #f0e4d7;
+  text-align: left;
+  padding: 0.55rem;
+}
