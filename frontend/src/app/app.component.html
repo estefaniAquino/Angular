@@ -1,0 +1,97 @@
+<main class="container">
+  <header>
+    <h1>Inventario de Repostería</h1>
+    <p>CRUD completo + calculadora de costos y utilidad estimada.</p>
+  </header>
+
+  <section class="summary">
+    <article>
+      <h3>Inversión total</h3>
+      <p>{{ summary.totalInversion | currency:'USD' }}</p>
+    </article>
+    <article>
+      <h3>Venta potencial</h3>
+      <p>{{ summary.totalVentaPotencial | currency:'USD' }}</p>
+    </article>
+    <article>
+      <h3>Utilidad estimada</h3>
+      <p>{{ summary.utilidadEstimada | currency:'USD' }}</p>
+    </article>
+  </section>
+
+  <section class="grid">
+    <form [formGroup]="form" (ngSubmit)="save()" class="panel">
+      <h2>{{ selectedItemId ? 'Editar' : 'Nuevo' }} ingrediente/producto</h2>
+
+      <label>
+        Nombre
+        <input formControlName="nombre" placeholder="Ej. Harina" />
+      </label>
+
+      <label>
+        Categoría
+        <input formControlName="categoria" placeholder="Secos, lácteos, decoración..." />
+      </label>
+
+      <label>
+        Unidad de medida
+        <input formControlName="unidadMedida" placeholder="kg, litro, unidad..." />
+      </label>
+
+      <label>
+        Cantidad disponible
+        <input type="number" formControlName="quantity" />
+      </label>
+
+      <label>
+        Costo unitario
+        <input type="number" formControlName="unitCost" />
+      </label>
+
+      <label>
+        Precio de venta unitario
+        <input type="number" formControlName="salePrice" />
+      </label>
+
+      <div class="actions">
+        <button type="submit">{{ selectedItemId ? 'Actualizar' : 'Agregar' }}</button>
+        <button type="button" class="secondary" (click)="resetForm()">Limpiar</button>
+      </div>
+    </form>
+
+    <section class="panel">
+      <h2>Listado de inventario</h2>
+      <p *ngIf="loading">Cargando...</p>
+
+      <table *ngIf="!loading && items.length > 0">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Costo total</th>
+            <th>Ingreso potencial</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items">
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.categoria }}</td>
+            <td>{{ item.quantity }} {{ item.unidadMedida }}</td>
+            <td>{{ item.totalCost | currency:'USD' }}</td>
+            <td>{{ item.potentialRevenue | currency:'USD' }}</td>
+            <td class="row-actions">
+              <button type="button" (click)="edit(item)">Editar</button>
+              <button type="button" class="danger" (click)="delete(item.id)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p *ngIf="!loading && items.length === 0">
+        Aún no hay productos en tu inventario.
+      </p>
+    </section>
+  </section>
+</main>
