@@ -2,7 +2,7 @@
 
 Proyecto completo para gestionar un inventario de repostería con:
 
-- **Frontend:** Angular (formulario + tabla CRUD con estilo rosa pastel).
+- **Frontend:** Angular (dashboard + navegación + tabla CRUD con estilo rosa pastel).
 - **Backend:** Node.js + Express.
 - **Base de datos:** Firebase Firestore.
 - **Calculadora de costos:** costo total y precio sugerido según margen de ganancia.
@@ -94,6 +94,8 @@ Base URL completa: `http://localhost:3000/api/inventario`
 ## 6) ¿Qué incluye la app?
 
 - Alta, edición, listado y eliminación de productos de repostería.
+- Dashboard con métricas rápidas (productos, valor inventario, venta potencial).
+- Barra de navegación para cambiar entre Dashboard e Inventario.
 - Cálculo automático de:
   - costo total = ingredientes + empaque + mano de obra.
   - precio sugerido = costo total + margen de ganancia (%).
