@@ -1,0 +1,52 @@
+.dashboard h2 {
+  margin: 0;
+  color: #b56a8c;
+}
+
+.dashboard p {
+  color: var(--texto-suave);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.card {
+  background: var(--rosa-card);
+  border: 1px solid var(--rosa-borde);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(230, 143, 179, 0.12);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #8b5870;
+}
+
+.card strong {
+  font-size: 1.3rem;
+  color: #7b3f5b;
+}
+
+.listado ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listado li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #f6dce8;
+}
+
+@media (max-width: 920px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
