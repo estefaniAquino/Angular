@@ -1,10 +1,19 @@
+<nav class="navbar">
+  <div class="brand">DulceStock</div>
+  <div class="links">
+    <a href="#resumen">Resumen</a>
+    <a href="#formulario">Agregar producto</a>
+    <a href="#inventario">Inventario</a>
+  </div>
+</nav>
+
 <main class="container">
   <header>
     <h1>Inventario de Repostería</h1>
     <p>CRUD completo + calculadora de costos y utilidad estimada.</p>
   </header>
 
-  <section class="summary">
+  <section class="summary" id="resumen">
     <article>
       <h3>Inversión total</h3>
       <p>{{ summary.totalInversion | currency:'USD' }}</p>
@@ -20,7 +29,7 @@
   </section>
 
   <section class="grid">
-    <form [formGroup]="form" (ngSubmit)="save()" class="panel">
+    <form [formGroup]="form" (ngSubmit)="save()" class="panel" id="formulario">
       <h2>{{ selectedItemId ? 'Editar' : 'Nuevo' }} ingrediente/producto</h2>
 
       <label>
@@ -59,7 +68,7 @@
       </div>
     </form>
 
-    <section class="panel">
+    <section class="panel" id="inventario">
       <h2>Listado de inventario</h2>
       <p *ngIf="loading">Cargando...</p>
 
