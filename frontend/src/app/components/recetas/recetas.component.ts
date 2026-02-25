@@ -21,6 +21,7 @@ export class RecetasComponent implements OnInit {
   editandoId: string | null = null;
 
   form = this.fb.nonNullable.group({
+    // Campos reales de la receta.
     nombre: ['', Validators.required],
     categoria: ['Tortas', Validators.required],
     porciones: [12, [Validators.required, Validators.min(1)]],
@@ -28,9 +29,11 @@ export class RecetasComponent implements OnInit {
     costoManoObra: [0, [Validators.required, Validators.min(0)]],
     gastosFijos: [0, [Validators.required, Validators.min(0)]],
     margenGanancia: [40, [Validators.required, Validators.min(0)]],
-    ingredienteId: ['', Validators.required],
-    cantidadUsada: [0, [Validators.required, Validators.min(0.01)]],
     notas: [''],
+
+    // Campos auxiliares (solo para agregar ingredientes a la lista temporal).
+    ingredienteId: [''],
+    cantidadUsada: [0, [Validators.min(0.01)]],
   });
 
   ngOnInit(): void {
@@ -43,11 +46,14 @@ export class RecetasComponent implements OnInit {
   }
 
   agregarIngrediente(): void {
-    if (!this.form.controls.ingredienteId.value || this.form.controls.cantidadUsada.invalid) return;
-    this.ingredientesReceta.push({
-      ingredienteId: this.form.controls.ingredienteId.value,
-      cantidadUsada: Number(this.form.controls.cantidadUsada.value),
-    });
+    const ingredienteId = this.form.controls.ingredienteId.value;
+    const cantidadUsada = Number(this.form.controls.cantidadUsada.value);
+
+    if (!ingredienteId || cantidadUsada <= 0) {
+      return;
+    }
+
+    this.ingredientesReceta.push({ ingredienteId, cantidadUsada });
     this.form.patchValue({ ingredienteId: '', cantidadUsada: 0 });
   }
 
@@ -56,7 +62,22 @@ export class RecetasComponent implements OnInit {
   }
 
   guardarReceta(): void {
-    if (this.form.invalid || this.ingredientesReceta.length === 0) return;
+    // Validamos solo los campos principales, no los auxiliares de agregación.
+    const controlesPrincipales = [
+      this.form.controls.nombre,
+      this.form.controls.categoria,
+      this.form.controls.porciones,
+      this.form.controls.costoEmpaque,
+      this.form.controls.costoManoObra,
+      this.form.controls.gastosFijos,
+      this.form.controls.margenGanancia,
+    ];
+
+    const formPrincipalInvalido = controlesPrincipales.some((control) => control.invalid);
+    if (formPrincipalInvalido || this.ingredientesReceta.length === 0) {
+      controlesPrincipales.forEach((control) => control.markAsTouched());
+      return;
+    }
 
     const payload: Receta = {
       nombre: this.form.controls.nombre.value,
