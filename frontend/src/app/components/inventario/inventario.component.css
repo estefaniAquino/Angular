@@ -1,0 +1,136 @@
+.contenedor {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+  color: #b56a8c;
+}
+
+p {
+  color: var(--texto-suave);
+}
+
+.card {
+  background: var(--rosa-card);
+  border: 1px solid var(--rosa-borde);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 18px rgba(230, 143, 179, 0.12);
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+}
+
+input,
+textarea {
+  border: 1px solid #ebc2d7;
+  border-radius: 10px;
+  padding: 0.55rem;
+  background: #fff;
+  color: var(--texto-principal);
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #f0b8d1;
+  border-color: #e7a7c4;
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.calculo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #fdeef5;
+  border: 1px dashed #efb9d1;
+  padding: 0.75rem;
+  border-radius: 10px;
+  color: #8a4e67;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background: var(--rosa-principal);
+  color: white;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  background: var(--rosa-principal-hover);
+}
+
+button.secundario {
+  background: var(--rosa-secundario);
+  color: #6a3b50;
+}
+
+button.secundario:hover {
+  background: #e9acc8;
+}
+
+button.eliminar {
+  background: var(--rosa-eliminar);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background: var(--rosa-tabla-header);
+}
+
+th,
+td {
+  border-bottom: 1px solid #f5dce8;
+  text-align: left;
+  padding: 0.6rem;
+}
+
+tbody tr:hover {
+  background: #fff6fa;
+}
+
+@media (max-width: 820px) {
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+
+  .col-span-2 {
+    grid-column: span 1;
+  }
+
+  .acciones {
+    flex-wrap: wrap;
+  }
+}

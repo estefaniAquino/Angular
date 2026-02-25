@@ -1,0 +1,15 @@
+.contenedor { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+.card { background: var(--rosa-card); border: 1px solid var(--rosa-borde); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+.grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+label { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+input, textarea { border: 1px solid #ebc2d7; border-radius: 10px; padding: 0.55rem; }
+button { border: 0; border-radius: 10px; background: var(--rosa-principal); color: #fff; padding: 0.55rem 0.9rem; }
+button.eliminar { background: var(--rosa-eliminar); }
+.col-span-2 { grid-column: span 2; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+thead { background: var(--rosa-tabla-header); }
+th, td { border-bottom: 1px solid #f5dce8; text-align: left; padding: 0.6rem; }
+@media (max-width: 780px) { .grid-form { grid-template-columns: 1fr; } .col-span-2 { grid-column: span 1; } }
+
+.acciones { display: flex; gap: 0.5rem; }
+button.secundario { background: var(--rosa-secundario); color: #6a3b50; }
