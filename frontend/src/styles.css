@@ -1,0 +1,27 @@
+/*
+  Estilos globales en rosa pastel para toda la aplicación.
+  Aquí definimos variables para poder cambiar la paleta fácilmente.
+*/
+:root {
+  --rosa-fondo: #fff4f8;
+  --rosa-card: #fff9fc;
+  --rosa-borde: #f6d8e7;
+  --rosa-principal: #e68fb3;
+  --rosa-principal-hover: #d97ba2;
+  --rosa-secundario: #f3bfd5;
+  --texto-principal: #5b3a49;
+  --texto-suave: #855f70;
+  --rosa-eliminar: #d96b94;
+  --rosa-tabla-header: #fde7f0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top, #fff8fb 0%, var(--rosa-fondo) 45%, #ffeef6 100%);
+  color: var(--texto-principal);
+}
+
+* {
+  box-sizing: border-box;
+}

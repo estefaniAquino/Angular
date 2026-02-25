@@ -1,0 +1,59 @@
+<div class="contenedor">
+  <h1>Recetas</h1>
+  <p>Calculadora tipo receta detallada: agrega ingredientes guardados y obtén costo + precio sugerido.</p>
+
+  <section class="card">
+    <h2>Nueva receta (Ej: Torta ByEstef)</h2>
+    <form [formGroup]="form" (ngSubmit)="guardarReceta()" class="grid-form">
+      <label>Nombre <input formControlName="nombre" type="text"></label>
+      <label>Categoría <input formControlName="categoria" type="text"></label>
+      <label>Porciones <input formControlName="porciones" type="number" min="1"></label>
+      <label>Empaque <input formControlName="costoEmpaque" type="number" min="0" step="0.01"></label>
+      <label>Mano de obra <input formControlName="costoManoObra" type="number" min="0" step="0.01"></label>
+      <label>Gastos fijos <input formControlName="gastosFijos" type="number" min="0" step="0.01"></label>
+      <label>Margen (%) <input formControlName="margenGanancia" type="number" min="0"></label>
+
+      <div class="agregar col-span-2">
+        <label>Ingrediente
+          <select formControlName="ingredienteId">
+            <option value="">Selecciona uno</option>
+            <option *ngFor="let ing of ingredientes" [value]="ing.id">{{ ing.nombre }} ({{ ing.unidadBase }})</option>
+          </select>
+        </label>
+        <label>Cantidad usada
+          <input formControlName="cantidadUsada" type="number" min="0.01" step="0.01">
+        </label>
+        <button type="button" (click)="agregarIngrediente()">Agregar ingrediente</button>
+      </div>
+
+      <div class="col-span-2 lista-ingredientes">
+        <p *ngIf="ingredientesReceta.length===0">Aún no agregas ingredientes.</p>
+        <ul>
+          <li *ngFor="let item of ingredientesReceta; let i=index">
+            {{ nombreIngrediente(item.ingredienteId) }} - {{ item.cantidadUsada }}
+            <button type="button" class="eliminar" (click)="quitarIngrediente(i)">Quitar</button>
+          </li>
+        </ul>
+      </div>
+
+      <label class="col-span-2">Notas <textarea formControlName="notas" rows="2"></textarea></label>
+      <div class="col-span-2"><button type="submit">Guardar receta y calcular</button></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Recetas registradas</h2>
+    <table>
+      <thead><tr><th>Nombre</th><th>Costo total</th><th>Precio sugerido</th><th>Precio por porción</th><th>Acción</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let r of recetas">
+          <td>{{ r.nombre }}</td>
+          <td>{{ r.costoTotal || 0 | currency:'MXN' }}</td>
+          <td>{{ r.precioSugerido || 0 | currency:'MXN' }}</td>
+          <td>{{ r.precioPorPorcion || 0 | currency:'MXN' }}</td>
+          <td><button class="eliminar" (click)="eliminar(r.id)">Eliminar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
