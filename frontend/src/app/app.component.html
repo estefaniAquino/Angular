@@ -1,6 +1,6 @@
-<header class="nav-wrapper">
+<header class="nav-wrapper glass" *ngIf="isAuth">
   <div class="nav-contenedor">
-    <h2>🍰 ByEstef</h2>
+    <h2 class="brand">🍰 ByEstef</h2>
 
     <nav>
       <a routerLink="/dashboard" routerLinkActive="activo">Dashboard</a>
@@ -8,6 +8,13 @@
       <a routerLink="/recetas" routerLinkActive="activo">Recetas</a>
       <a routerLink="/ventas" routerLinkActive="activo">Ventas</a>
     </nav>
+
+    <div class="acciones-top">
+      <button type="button" class="secundario" (click)="toggleTheme()">
+        {{ darkMode ? '☀️ Claro' : '🌙 Oscuro' }}
+      </button>
+      <button type="button" class="salir" (click)="logout()">Salir</button>
+    </div>
   </div>
 </header>
 

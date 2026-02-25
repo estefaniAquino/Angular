@@ -1,0 +1,29 @@
+<div class="login-page">
+  <section class="login-panel glass slide-in">
+    <h1>ByEstef</h1>
+    <p>Bienvenida. Ingresa para continuar al dashboard.</p>
+
+    <form [formGroup]="form" (ngSubmit)="ingresar()">
+      <label>
+        Email
+        <input type="email" formControlName="email" />
+      </label>
+
+      <label>
+        Contraseña
+        <input type="password" formControlName="password" />
+      </label>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button type="submit" [disabled]="cargando">
+        {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </section>
+
+  <aside class="preview glass fade-in">
+    <h2>Panel ByEstef</h2>
+    <p>Dashboard, ingredientes, recetas y ventas en un solo lugar.</p>
+  </aside>
+</div>

@@ -5,6 +5,8 @@ import ingredientesRoutes from './routes/ingredientesRoutes.js';
 import recetasRoutes from './routes/recetasRoutes.js';
 import ventasRoutes from './routes/ventasRoutes.js';
 import reportesRoutes from './routes/reportesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { requireAuth } from './middlewares/authMiddleware.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,10 +18,14 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', proyecto: 'ByEstef' });
 });
 
-app.use('/api/ingredientes', ingredientesRoutes);
-app.use('/api/recetas', recetasRoutes);
-app.use('/api/ventas', ventasRoutes);
-app.use('/api/reportes', reportesRoutes);
+// Ruta pública para autenticación.
+app.use('/api/auth', authRoutes);
+
+// Todas las rutas de negocio requieren token JWT.
+app.use('/api/ingredientes', requireAuth, ingredientesRoutes);
+app.use('/api/recetas', requireAuth, recetasRoutes);
+app.use('/api/ventas', requireAuth, ventasRoutes);
+app.use('/api/reportes', requireAuth, reportesRoutes);
 
 app.use((error, _req, res, _next) => {
   console.error(error);

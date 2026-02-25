@@ -1,7 +1,3 @@
-/*
-  Estilos globales en rosa pastel para toda la aplicación.
-  Aquí definimos variables para poder cambiar la paleta fácilmente.
-*/
 :root {
   --rosa-fondo: #fff4f8;
   --rosa-card: #fff9fc;
@@ -13,15 +9,83 @@
   --texto-suave: #855f70;
   --rosa-eliminar: #d96b94;
   --rosa-tabla-header: #fde7f0;
+
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: #ebc2d7;
+  --brand-color: #b56a8c;
+  --nav-bg: #ffdbe9;
+  --nav-bg-hover: #f9cce0;
+  --nav-border: #efbdd3;
+  --nav-text: #7f4f63;
+  --text-primary: var(--texto-principal);
 }
 
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: radial-gradient(circle at top, #fff8fb 0%, var(--rosa-fondo) 45%, #ffeef6 100%);
-  color: var(--texto-principal);
+  color: var(--text-primary);
+}
+
+body.dark-theme {
+  --rosa-fondo: #1e1924;
+  --rosa-card: #28212e;
+  --rosa-borde: #4f3e52;
+  --rosa-principal: #b77494;
+  --rosa-principal-hover: #a46483;
+  --rosa-secundario: #514058;
+  --texto-principal: #f3eaf2;
+  --texto-suave: #dec9da;
+  --rosa-eliminar: #b75b7d;
+  --rosa-tabla-header: #382b3c;
+
+  --glass-bg: rgba(39, 31, 46, 0.5);
+  --glass-border: rgba(244, 221, 238, 0.18);
+  --input-bg: rgba(31, 25, 36, 0.85);
+  --input-border: #6a506e;
+  --brand-color: #f2d2e4;
+  --nav-bg: #443449;
+  --nav-bg-hover: #53405a;
+  --nav-border: #6a506e;
+  --nav-text: #f1e0ec;
+  --text-primary: var(--texto-principal);
+
+  background: radial-gradient(circle at top, #2b2432 0%, #1d1721 52%, #130f16 100%);
 }
 
 * {
   box-sizing: border-box;
 }
+
+.card {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dashboard-fade-in main,
+body.dashboard-fade-in .contenedor {
+  animation: dashboardFade 0.7s ease;
+}
+
+@keyframes dashboardFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body.dark-theme table { background: #221b28 !important; color: var(--text-primary); }
+body.dark-theme thead { background: var(--rosa-tabla-header) !important; }
+body.dark-theme th,
+body.dark-theme td { border-bottom-color: #4b3a4f !important; color: var(--text-primary); }
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select { background: var(--input-bg) !important; color: var(--text-primary) !important; border-color: var(--input-border) !important; }
+body.dark-theme p,
+body.dark-theme label,
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4 { color: var(--text-primary) !important; }
