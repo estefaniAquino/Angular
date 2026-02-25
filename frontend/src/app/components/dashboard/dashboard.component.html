@@ -1,0 +1,59 @@
+<div class="contenedor">
+  <h1>Dashboard ByEstef</h1>
+  <p>Panel de ventas con periodos: día, semana, quincena y mes.</p>
+
+  <div class="filtros card">
+    <label>
+      Periodo
+      <select [(ngModel)]="periodo" (change)="cargarReporte()">
+        <option value="dia">Día</option>
+        <option value="semana">Semana</option>
+        <option value="quincena">Quincena</option>
+        <option value="mes">Mes</option>
+      </select>
+    </label>
+  </div>
+
+  <p *ngIf="cargando">Cargando reporte...</p>
+
+  <section class="resumen" *ngIf="!cargando && reporte">
+    <article class="kpi">
+      <h3>Ventas del periodo</h3>
+      <p>{{ reporte.totalVentas | currency:'MXN' }}</p>
+    </article>
+
+    <article class="kpi">
+      <h3>Transacciones</h3>
+      <p>{{ reporte.totalTransacciones }}</p>
+    </article>
+
+    <article class="kpi">
+      <h3>Producto más vendido</h3>
+      <p>{{ reporte.productoMasVendido?.nombre || 'Sin ventas' }}</p>
+      <small *ngIf="reporte.productoMasVendido">{{ reporte.productoMasVendido.cantidad }} uds.</small>
+    </article>
+  </section>
+
+  <section class="card" *ngIf="!cargando && reporte">
+    <h2>Últimas ventas del periodo</h2>
+    <table *ngIf="reporte.ventas?.length; else sinVentas">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Canal</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let venta of reporte.ventas">
+          <td>{{ venta.fecha | date:'short' }}</td>
+          <td>{{ venta.canal }}</td>
+          <td>{{ venta.totalVenta | currency:'MXN' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #sinVentas>
+      <p>No hay ventas para este periodo.</p>
+    </ng-template>
+  </section>
+</div>
