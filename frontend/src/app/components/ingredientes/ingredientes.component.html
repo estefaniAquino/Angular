@@ -3,28 +3,34 @@
   <p>Aquí guardas ingredientes con su costo por unidad base para presupuestar recetas.</p>
 
   <section class="card">
-    <h2>Nuevo ingrediente</h2>
+    <h2>{{ editandoId ? 'Editar ingrediente' : 'Nuevo ingrediente' }}</h2>
     <form [formGroup]="form" (ngSubmit)="guardar()" class="grid-form">
       <label>Nombre <input formControlName="nombre" type="text"></label>
       <label>Unidad base <input formControlName="unidadBase" type="text" placeholder="g, ml, unidad"></label>
       <label>Costo por unidad base <input formControlName="costoUnidad" type="number" min="0" step="0.01"></label>
       <label>Stock actual <input formControlName="stockActual" type="number" min="0" step="0.01"></label>
       <label class="col-span-2">Notas <textarea formControlName="notas" rows="2"></textarea></label>
-      <div class="col-span-2"><button type="submit">Guardar ingrediente</button></div>
+      <div class="col-span-2 acciones">
+        <button type="submit">{{ editandoId ? 'Actualizar' : 'Guardar ingrediente' }}</button>
+        <button type="button" class="secundario" (click)="cancelarEdicion()">Limpiar</button>
+      </div>
     </form>
   </section>
 
   <section class="card">
     <h2>Listado</h2>
     <table>
-      <thead><tr><th>Nombre</th><th>Unidad</th><th>Costo unidad</th><th>Stock</th><th>Acción</th></tr></thead>
+      <thead><tr><th>Nombre</th><th>Unidad</th><th>Costo unidad</th><th>Stock</th><th>Acciones</th></tr></thead>
       <tbody>
         <tr *ngFor="let i of ingredientes">
           <td>{{ i.nombre }}</td>
           <td>{{ i.unidadBase }}</td>
           <td>{{ i.costoUnidad | currency:'MXN' }}</td>
           <td>{{ i.stockActual }}</td>
-          <td><button class="eliminar" (click)="eliminar(i.id)">Eliminar</button></td>
+          <td>
+            <button type="button" (click)="editar(i)">Editar</button>
+            <button type="button" class="eliminar" (click)="eliminar(i.id)">Eliminar</button>
+          </td>
         </tr>
       </tbody>
     </table>

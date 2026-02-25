@@ -16,6 +16,7 @@ export class IngredientesComponent implements OnInit {
   private readonly api = inject(ApiService);
 
   ingredientes: Ingrediente[] = [];
+  editandoId: string | null = null;
 
   form = this.fb.nonNullable.group({
     nombre: ['', Validators.required],
@@ -33,14 +34,43 @@ export class IngredientesComponent implements OnInit {
 
   guardar(): void {
     if (this.form.invalid) return;
-    this.api.crearIngrediente(this.form.getRawValue()).subscribe(() => {
-      this.form.reset({ nombre: '', unidadBase: 'g', costoUnidad: 0, stockActual: 0, notas: '' });
-      this.cargar();
+
+    const payload = this.form.getRawValue();
+
+    if (this.editandoId) {
+      this.api.actualizarIngrediente(this.editandoId, payload).subscribe(() => this.limpiarYRecargar());
+      return;
+    }
+
+    this.api.crearIngrediente(payload).subscribe(() => this.limpiarYRecargar());
+  }
+
+  editar(ingrediente: Ingrediente): void {
+    this.editandoId = ingrediente.id || null;
+    this.form.patchValue({
+      nombre: ingrediente.nombre,
+      unidadBase: ingrediente.unidadBase,
+      costoUnidad: ingrediente.costoUnidad,
+      stockActual: ingrediente.stockActual,
+      notas: ingrediente.notas,
     });
+  }
+
+  cancelarEdicion(): void {
+    this.editandoId = null;
+    this.form.reset({ nombre: '', unidadBase: 'g', costoUnidad: 0, stockActual: 0, notas: '' });
   }
 
   eliminar(id?: string): void {
     if (!id) return;
+    const ok = window.confirm('¿Seguro que quieres eliminar este ingrediente?');
+    if (!ok) return;
+
     this.api.eliminarIngrediente(id).subscribe(() => this.cargar());
+  }
+
+  private limpiarYRecargar(): void {
+    this.cancelarEdicion();
+    this.cargar();
   }
 }

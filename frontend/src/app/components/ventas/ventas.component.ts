@@ -18,6 +18,7 @@ export class VentasComponent implements OnInit {
   recetas: Receta[] = [];
   ventas: any[] = [];
   itemsVenta: Array<{ recetaId: string; cantidad: number; precioUnitario?: number }> = [];
+  editandoId: string | null = null;
 
   form = this.fb.nonNullable.group({
     fecha: [new Date().toISOString().slice(0, 16), Validators.required],
@@ -53,21 +54,70 @@ export class VentasComponent implements OnInit {
 
   guardarVenta(): void {
     if (this.itemsVenta.length === 0) return;
-    this.api
-      .crearVenta({
-        fecha: new Date(this.form.controls.fecha.value).toISOString(),
-        canal: this.form.controls.canal.value,
-        items: this.itemsVenta,
-        notas: this.form.controls.notas.value,
-      } as any)
-      .subscribe(() => {
-        this.itemsVenta = [];
-        this.form.patchValue({ canal: 'Mostrador', recetaId: '', cantidad: 1, precioUnitario: 0, notas: '' });
-        this.cargarVentas();
-      });
+
+    const payload: any = {
+      fecha: new Date(this.form.controls.fecha.value).toISOString(),
+      canal: this.form.controls.canal.value,
+      items: this.itemsVenta,
+      notas: this.form.controls.notas.value,
+    };
+
+    if (this.editandoId) {
+      this.api.actualizarVenta(this.editandoId, payload).subscribe(() => this.limpiarYRecargar());
+      return;
+    }
+
+    this.api.crearVenta(payload).subscribe(() => this.limpiarYRecargar());
+  }
+
+  editar(venta: any): void {
+    this.editandoId = venta.id;
+    this.itemsVenta = (venta.items || []).map((i: any) => ({
+      recetaId: i.recetaId,
+      cantidad: Number(i.cantidad || 1),
+      precioUnitario: Number(i.precioUnitario || 0),
+    }));
+
+    this.form.patchValue({
+      fecha: (venta.fecha || new Date().toISOString()).slice(0, 16),
+      canal: venta.canal || 'Mostrador',
+      recetaId: '',
+      cantidad: 1,
+      precioUnitario: 0,
+      notas: venta.notas || '',
+    });
+  }
+
+  cancelarEdicion(): void {
+    this.editandoId = null;
+    this.itemsVenta = [];
+    this.form.patchValue({
+      fecha: new Date().toISOString().slice(0, 16),
+      canal: 'Mostrador',
+      recetaId: '',
+      cantidad: 1,
+      precioUnitario: 0,
+      notas: '',
+    });
+  }
+
+  eliminar(id?: string): void {
+    if (!id) return;
+    const ok = window.confirm('¿Seguro que quieres eliminar esta venta?');
+    if (!ok) return;
+
+    this.api.eliminarVenta(id).subscribe(() => {
+      this.cargarVentas();
+      if (this.editandoId === id) this.cancelarEdicion();
+    });
   }
 
   nombreReceta(id: string): string {
     return this.recetas.find((r) => r.id === id)?.nombre || id;
+  }
+
+  private limpiarYRecargar(): void {
+    this.cancelarEdicion();
+    this.cargarVentas();
   }
 }

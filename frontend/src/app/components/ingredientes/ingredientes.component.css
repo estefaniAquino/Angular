@@ -10,3 +10,6 @@ table { width: 100%; border-collapse: collapse; background: #fff; }
 thead { background: var(--rosa-tabla-header); }
 th, td { border-bottom: 1px solid #f5dce8; text-align: left; padding: 0.6rem; }
 @media (max-width: 780px) { .grid-form { grid-template-columns: 1fr; } .col-span-2 { grid-column: span 1; } }
+
+.acciones { display: flex; gap: 0.5rem; }
+button.secundario { background: var(--rosa-secundario); color: #6a3b50; }

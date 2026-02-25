@@ -17,6 +17,10 @@ export class ApiService {
     return this.http.post<Ingrediente>(`${this.baseUrl}/ingredientes`, payload);
   }
 
+  actualizarIngrediente(id: string, payload: Ingrediente): Observable<Ingrediente> {
+    return this.http.put<Ingrediente>(`${this.baseUrl}/ingredientes/${id}`, payload);
+  }
+
   eliminarIngrediente(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/ingredientes/${id}`);
   }
@@ -29,6 +33,10 @@ export class ApiService {
     return this.http.post<Receta>(`${this.baseUrl}/recetas`, payload);
   }
 
+  actualizarReceta(id: string, payload: Receta): Observable<Receta> {
+    return this.http.put<Receta>(`${this.baseUrl}/recetas/${id}`, payload);
+  }
+
   eliminarReceta(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/recetas/${id}`);
   }
@@ -39,6 +47,14 @@ export class ApiService {
 
   crearVenta(payload: Venta): Observable<any> {
     return this.http.post(`${this.baseUrl}/ventas`, payload);
+  }
+
+  actualizarVenta(id: string, payload: Venta): Observable<any> {
+    return this.http.put(`${this.baseUrl}/ventas/${id}`, payload);
+  }
+
+  eliminarVenta(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/ventas/${id}`);
   }
 
   reporteVentas(periodo: 'dia' | 'semana' | 'quincena' | 'mes'): Observable<any> {

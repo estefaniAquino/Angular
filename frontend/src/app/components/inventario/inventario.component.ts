@@ -116,6 +116,11 @@ export class InventarioComponent implements OnInit {
       return;
     }
 
+    const ok = window.confirm('¿Seguro que quieres eliminar este producto?');
+    if (!ok) {
+      return;
+    }
+
     this.inventarioService.eliminarProducto(id).subscribe(() => {
       this.cargarProductos();
       if (this.editandoId === id) {

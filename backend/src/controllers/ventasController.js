@@ -1,15 +1,10 @@
-import { deleteVenta, getVentas, createVenta } from '../services/ventasService.js';
+import { createVenta, deleteVenta, getVentaById, getVentas, updateVenta } from '../services/ventasService.js';
 import { getRecetaById } from '../services/recetasService.js';
 
-export const listarVentas = async (_req, res) => {
-  res.json(await getVentas());
-};
-
-export const crearVenta = async (req, res) => {
-  const body = req.body;
+const construirItemsVenta = async (itemsBody = []) => {
   const items = [];
 
-  for (const item of body.items || []) {
+  for (const item of itemsBody) {
     const receta = await getRecetaById(item.recetaId);
     if (!receta) continue;
 
@@ -26,6 +21,16 @@ export const crearVenta = async (req, res) => {
     });
   }
 
+  return items;
+};
+
+export const listarVentas = async (_req, res) => {
+  res.json(await getVentas());
+};
+
+export const crearVenta = async (req, res) => {
+  const body = req.body;
+  const items = await construirItemsVenta(body.items || []);
   const totalVenta = items.reduce((acc, it) => acc + it.totalLinea, 0);
 
   const venta = await createVenta({
@@ -39,7 +44,29 @@ export const crearVenta = async (req, res) => {
   res.status(201).json(venta);
 };
 
+export const actualizarVenta = async (req, res) => {
+  const existente = await getVentaById(req.params.id);
+  if (!existente) return res.status(404).json({ message: 'Venta no encontrada.' });
+
+  const body = req.body;
+  const items = await construirItemsVenta(body.items || []);
+  const totalVenta = items.reduce((acc, it) => acc + it.totalLinea, 0);
+
+  const venta = await updateVenta(req.params.id, {
+    fecha: body.fecha || existente.fecha,
+    canal: body.canal || 'Mostrador',
+    items,
+    totalVenta: Number(totalVenta.toFixed(2)),
+    notas: body.notas || '',
+  });
+
+  return res.json(venta);
+};
+
 export const eliminarVenta = async (req, res) => {
+  const existente = await getVentaById(req.params.id);
+  if (!existente) return res.status(404).json({ message: 'Venta no encontrada.' });
+
   await deleteVenta(req.params.id);
   res.status(204).send();
 };

@@ -3,7 +3,7 @@
   <p>Registra ventas hechas y alimenta el dashboard por día, semana, quincena o mes.</p>
 
   <section class="card">
-    <h2>Nueva venta</h2>
+    <h2>{{ editandoId ? 'Editar venta' : 'Nueva venta' }}</h2>
     <form [formGroup]="form" (ngSubmit)="guardarVenta()" class="grid-form">
       <label>Fecha
         <input type="datetime-local" formControlName="fecha">
@@ -42,8 +42,9 @@
         <textarea rows="2" formControlName="notas"></textarea>
       </label>
 
-      <div class="col-span-2">
-        <button type="submit">Guardar venta</button>
+      <div class="col-span-2 acciones">
+        <button type="submit">{{ editandoId ? 'Actualizar venta' : 'Guardar venta' }}</button>
+        <button type="button" class="secundario" (click)="cancelarEdicion()">Limpiar</button>
       </div>
     </form>
   </section>
@@ -51,13 +52,17 @@
   <section class="card">
     <h2>Historial de ventas</h2>
     <table>
-      <thead><tr><th>Fecha</th><th>Canal</th><th>Total</th><th>Items</th></tr></thead>
+      <thead><tr><th>Fecha</th><th>Canal</th><th>Total</th><th>Items</th><th>Acciones</th></tr></thead>
       <tbody>
         <tr *ngFor="let v of ventas">
           <td>{{ v.fecha | date:'short' }}</td>
           <td>{{ v.canal }}</td>
           <td>{{ v.totalVenta | currency:'MXN' }}</td>
           <td>{{ v.items?.length || 0 }}</td>
+          <td>
+            <button type="button" (click)="editar(v)">Editar</button>
+            <button type="button" class="eliminar" (click)="eliminar(v.id)">Eliminar</button>
+          </td>
         </tr>
       </tbody>
     </table>

@@ -18,6 +18,7 @@ export class RecetasComponent implements OnInit {
   ingredientes: Ingrediente[] = [];
   recetas: Receta[] = [];
   ingredientesReceta: Array<{ ingredienteId: string; cantidadUsada: number }> = [];
+  editandoId: string | null = null;
 
   form = this.fb.nonNullable.group({
     nombre: ['', Validators.required],
@@ -69,22 +70,61 @@ export class RecetasComponent implements OnInit {
       notas: this.form.controls.notas.value,
     };
 
-    this.api.crearReceta(payload).subscribe(() => {
-      this.form.patchValue({
-        nombre: '', categoria: 'Tortas', porciones: 12, costoEmpaque: 0, costoManoObra: 0,
-        gastosFijos: 0, margenGanancia: 40, notas: '', ingredienteId: '', cantidadUsada: 0,
-      });
-      this.ingredientesReceta = [];
-      this.cargarRecetas();
+    if (this.editandoId) {
+      this.api.actualizarReceta(this.editandoId, payload).subscribe(() => this.limpiarYRecargar());
+      return;
+    }
+
+    this.api.crearReceta(payload).subscribe(() => this.limpiarYRecargar());
+  }
+
+  editar(receta: Receta): void {
+    this.editandoId = receta.id || null;
+    this.ingredientesReceta = (receta.ingredientesDetalle || []).map((item) => ({
+      ingredienteId: item.ingredienteId,
+      cantidadUsada: Number(item.cantidadUsada || 0),
+    }));
+
+    this.form.patchValue({
+      nombre: receta.nombre,
+      categoria: receta.categoria,
+      porciones: receta.porciones,
+      costoEmpaque: receta.costoEmpaque,
+      costoManoObra: receta.costoManoObra,
+      gastosFijos: receta.gastosFijos,
+      margenGanancia: receta.margenGanancia,
+      notas: receta.notas,
+      ingredienteId: '',
+      cantidadUsada: 0,
     });
+  }
+
+  cancelarEdicion(): void {
+    this.editandoId = null;
+    this.form.patchValue({
+      nombre: '', categoria: 'Tortas', porciones: 12, costoEmpaque: 0, costoManoObra: 0,
+      gastosFijos: 0, margenGanancia: 40, notas: '', ingredienteId: '', cantidadUsada: 0,
+    });
+    this.ingredientesReceta = [];
   }
 
   eliminar(id?: string): void {
     if (!id) return;
-    this.api.eliminarReceta(id).subscribe(() => this.cargarRecetas());
+    const ok = window.confirm('¿Seguro que quieres eliminar esta receta?');
+    if (!ok) return;
+
+    this.api.eliminarReceta(id).subscribe(() => {
+      this.cargarRecetas();
+      if (this.editandoId === id) this.cancelarEdicion();
+    });
   }
 
   nombreIngrediente(id: string): string {
     return this.ingredientes.find((i) => i.id === id)?.nombre || id;
+  }
+
+  private limpiarYRecargar(): void {
+    this.cancelarEdicion();
+    this.cargarRecetas();
   }
 }

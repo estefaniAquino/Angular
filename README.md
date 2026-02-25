@@ -3,9 +3,9 @@
 Aplicación full-stack con 4 módulos en el navbar:
 
 - **Dashboard**: ventas por día/semana/quincena/mes + producto más vendido.
-- **Ingredientes**: alta y gestión de ingredientes con costo por unidad base.
-- **Recetas**: presupuesto de recetas usando ingredientes guardados.
-- **Ventas**: registro de ventas realizadas.
+- **Ingredientes**: alta, edición y eliminación (con confirmación) de ingredientes con costo por unidad base.
+- **Recetas**: presupuesto de recetas usando ingredientes guardados (con edición/eliminación).
+- **Ventas**: registro, edición y eliminación (con confirmación) de ventas realizadas.
 
 ## Stack
 - Frontend: Angular (standalone + router).
@@ -43,7 +43,7 @@ npm start
 
 - `GET/POST/PUT/DELETE /api/ingredientes`
 - `GET/POST/PUT/DELETE /api/recetas`
-- `GET/POST/DELETE /api/ventas`
+- `GET/POST/PUT/DELETE /api/ventas`
 - `GET /api/reportes/ventas?periodo=dia|semana|quincena|mes`
 
 ## Lógica de costos (recetas)
